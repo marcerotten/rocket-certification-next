@@ -1,15 +1,14 @@
 'use client';
-import { useState } from "react";
-import { Button } from "@/components/ui/button";
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
-import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { Textarea } from "@/components/ui/textarea";
-import { toast } from "sonner";
-import { Upload, Video, FileText, CheckCircle2 } from "lucide-react";
+import {useState} from "react";
+import {Button} from "@/components/ui/button";
+import {Card, CardContent, CardDescription, CardHeader, CardTitle} from "@/components/ui/card";
+import {Input} from "@/components/ui/input";
+import {Label} from "@/components/ui/label";
+import {Select, SelectContent, SelectItem, SelectTrigger, SelectValue} from "@/components/ui/select";
+import {toast} from "sonner";
+import {CheckCircle2, FileText, Upload, Video} from "lucide-react";
 import Navigation from "@/components/Navigation";
-import { useQuery } from "@tanstack/react-query";
+import {useQuery} from "@tanstack/react-query";
 
 interface Country {
   name: { common: string };
@@ -40,7 +39,7 @@ const Certification = () => {
     },
   });
 
-  const sortedCountries = countries?.sort((a, b) => 
+  const sortedCountries = countries?.sort((a, b) =>
     a.name.common.localeCompare(b.name.common)
   );
 
@@ -48,8 +47,8 @@ const Certification = () => {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    
-    if (!formData.firstName || !formData.lastName || !formData.email || 
+
+    if (!formData.firstName || !formData.lastName || !formData.email ||
         !formData.certLevel || !formData.company || !formData.country || !dbFile) {
       toast.error("Please fill all required fields");
       return;
@@ -63,11 +62,11 @@ const Certification = () => {
     // Analyze the database file with AI
     setAnalyzing(true);
     toast.info("Analyzing your bot project...");
-    
+
     try {
       const reviewFormData = new FormData();
       reviewFormData.append('dbFile', dbFile);
-      
+
       const response = await fetch(
         `${process.env.NEXT_PUBLIC_SUPABASE_URL}/functions/v1/review-bot-db`,
         {
@@ -83,15 +82,15 @@ const Certification = () => {
       const result = await response.json();
       setAnalysisResult(result);
       setAnalyzing(false);
-      
+
       toast.success("Analysis complete! See results below.");
-      
+
       // Still submit the application after analysis
       setTimeout(() => {
         setSubmitted(true);
         toast.success("Application submitted successfully!");
       }, 2000);
-      
+
     } catch (error) {
       console.error('Analysis error:', error);
       setAnalyzing(false);
@@ -132,8 +131,8 @@ const Certification = () => {
   return (
     <div className="min-h-screen bg-background">
       <Navigation />
-      
-      <div className="container py-12">
+
+      <div className="container py-12 mx-auto">
         <div className="mx-auto max-w-4xl space-y-8">
           <div className="text-center space-y-4">
             <h1 className="text-4xl font-bold bg-gradient-to-r from-primary to-accent bg-clip-text text-transparent">
@@ -303,8 +302,8 @@ const Certification = () => {
                       <div className="space-y-3">
                         <h4 className="font-semibold text-lg">Issues Found</h4>
                         {analysisResult.issues.map((issue: any, idx: number) => (
-                          <div 
-                            key={idx} 
+                          <div
+                            key={idx}
                             className={`p-4 rounded-lg border-l-4 ${
                               issue.type === 'error' ? 'bg-red-50 border-red-500 dark:bg-red-950/20' :
                               issue.type === 'warning' ? 'bg-yellow-50 border-yellow-500 dark:bg-yellow-950/20' :
@@ -373,7 +372,7 @@ const Certification = () => {
                       className="w-full h-full"
                     />
                   </div>
-                  
+
                   <div className="space-y-2">
                     <h4 className="font-semibold flex items-center gap-2">
                       <FileText className="h-4 w-4 text-primary" />
