@@ -9,6 +9,8 @@ import { Download, Search, Trash2 } from "lucide-react";
 import { toast } from "sonner";
 import * as XLSX from "xlsx";
 import Navigation from "@/components/Navigation";
+import {QueryClientProvider} from "@tanstack/react-query";
+import {QueryClient} from "@tanstack/query-core";
 
 // Product data
 const products = [
@@ -59,7 +61,7 @@ const Challenge = () => {
     const workbook = XLSX.utils.book_new();
     XLSX.utils.book_append_sheet(workbook, worksheet, "Products");
     XLSX.writeFile(workbook, "rocketbot_challenge.xlsx");
-    
+
     toast.success("Excel file downloaded successfully!");
   };
 
@@ -71,7 +73,7 @@ const Challenge = () => {
     if (foundProduct) {
       setResultPrice(foundProduct.price);
       setAttempts(prev => prev + 1);
-      
+
       if (foundProduct.category === categorySelect) {
         setCorrect(prev => prev + 1);
         toast.success("Correct match!");
@@ -96,12 +98,12 @@ const Challenge = () => {
   };
 
   const successRate = attempts > 0 ? Math.round((correct / attempts) * 100) : 0;
-
   return (
+
     <div className="min-h-screen bg-background">
       <Navigation />
-      
-      <div className="container py-12">
+
+      <div className="container py-12 mx-auto">
         <div className="mx-auto max-w-4xl space-y-8">
           <div className="text-center space-y-4">
             <h1 className="text-4xl font-bold bg-gradient-to-r from-primary to-accent bg-clip-text text-transparent">
@@ -251,6 +253,7 @@ const Challenge = () => {
         </div>
       </div>
     </div>
+
   );
 };
 
